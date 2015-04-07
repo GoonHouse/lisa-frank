@@ -18,14 +18,14 @@ function lisa_frank:setPalette(pal)
 	self.palette = {}
 	
 	-- build the palette table from the image to keep it out of memory
-	local h, w = pal:getHeight(), pal:getWidth()
+	local w, h = pal:getWidth(), pal:getHeight()
 	for y=1,h do
 		self.palette[y] = {}
 		for x=1,w do
 			self.palette[y][x]={pal:getPixel(x-1,y-1)}
 		end
 	end
-	self.num_palettes, self.palette_depth = h, w
+	self.palette_depth, self.num_palettes = w, h
 end
 
 local function _routeMap(x, y, r, g, b, a)
@@ -34,10 +34,10 @@ end
 
 function lisa_frank:transform(img, index)
 	self.index = index
-	local h, w = img:getHeight(), img:getWidth()
-	local newImg = love.image.newImageData(h, w)
+	local w, h = img:getWidth(), img:getHeight()
+	local newImg = love.image.newImageData(w, h)
 	-- something doesn't seem right here
-	newImg:paste(img, 0, 0, 0, 0, h, w)
+	newImg:paste(img, 0, 0, 0, 0, w, h)
 	newImg:mapPixel(_routeMap)
 	return newImg
 end
